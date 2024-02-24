@@ -5,7 +5,7 @@
  *      02/24/2024
  * 
  * 
- *      Version: 1.0
+ *      Version: 2.0
  *      
  * 
  * 
@@ -13,6 +13,27 @@
 
 
 //
+function convertEntitiesToEnglish($input)
+{
+    $htmlEntities = [
+        "&#1777;", // ۱
+        "&#1778;", // ۲
+        "&#1779;", // ۳
+        "&#1780;", // ۴
+        "&#1781;", // ۵
+        "&#1782;", // ۶
+        "&#1783;", // ۷
+        "&#1784;", // ۸
+        "&#1785;", // ۹
+    ];
+
+    $englishNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    $convertedString = str_replace($htmlEntities, $englishNumbers, $input);
+
+    return $convertedString;
+}
+
 $result_array['status'] = false;
 $result_array['holidays'] = array();
 
@@ -75,7 +96,11 @@ if ($response === false) {
             // Remove non-numeric characters from Persian number
             $firstSpanNumber = strtok($firstSpanValues[$i], ' ');
 
-            array_push($result_array['holidays'], $firstSpanNumber);
+            $engNum = convertEntitiesToEnglish($firstSpanNumber);
+
+            if (!in_array($engNum, $result_array['holidays'])) {
+                $result_array['holidays'][] = $engNum;
+            }
         }
     }
     echo json_encode($result_array);
