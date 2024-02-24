@@ -16,6 +16,7 @@
 function convertEntitiesToEnglish($input)
 {
     $htmlEntities = [
+        "&#1776;", // ۰
         "&#1777;", // ۱
         "&#1778;", // ۲
         "&#1779;", // ۳
@@ -27,7 +28,7 @@ function convertEntitiesToEnglish($input)
         "&#1785;", // ۹
     ];
 
-    $englishNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    $englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
     $convertedString = str_replace($htmlEntities, $englishNumbers, $input);
 
@@ -84,19 +85,16 @@ if ($response === false) {
     $replacement = '><';
     $response = preg_replace($pattern, $replacement, $response);
     //
-    $pattern = '/<li class=\'eventHoliday \'><span[^>]+id="[^"]+">(.*?)<\/span>/s';
+    $pattern = '/<div class=\' holiday\'><div class=\'jalali\' style=\'\'>(.*?)<\/div>/s';
     preg_match_all($pattern, $response, $matches);
 
     if (!empty($matches[1])) {
-        $firstSpanValues = $matches[1];
-        $count = count($firstSpanValues);
+        $gottenValue = $matches[1];
+        $count = count($gottenValue);
 
         for ($i = 0; $i < $count; $i++) {
 
-            // Remove non-numeric characters from Persian number
-            $firstSpanNumber = strtok($firstSpanValues[$i], ' ');
-
-            $engNum = convertEntitiesToEnglish($firstSpanNumber);
+            $engNum = convertEntitiesToEnglish($gottenValue);
 
             if (!in_array($engNum, $result_array['holidays'])) {
                 $result_array['holidays'][] = $engNum;
