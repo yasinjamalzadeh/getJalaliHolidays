@@ -97,7 +97,7 @@ if ($response === false) {
             $engNum = convertEntitiesToEnglish($gottenValue);
 
             if (!in_array($engNum, $result_array['holidays'])) {
-                $result_array['holidays'][] = $engNum;
+                $result_array['holidays'] = $engNum;
             }
         }
     }
