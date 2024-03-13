@@ -92,9 +92,14 @@ if ($response === false) {
         $gottenValue = $matches[1];
         $count = count($gottenValue);
 
-        $engNum = convertEntitiesToEnglish($gottenValue);
+        for ($i = 0; $i < $count; $i++) {
 
-        $result_array['holidays'] = $engNum;
+            $engNum = convertEntitiesToEnglish($gottenValue);
+
+            if (!in_array($engNum, $result_array['holidays'])) {
+                $result_array['holidays'] = $engNum;
+            }
+        }
     }
     echo json_encode($result_array);
     die;
